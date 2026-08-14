@@ -1,27 +1,26 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import Lottie, { type LottieRefCurrentProps } from "lottie-react";
 import type { AnimationEntry } from "@/lib/animations";
-import { basePath } from "@/lib/basePath";
+import { useLottieJson } from "@/lib/useLottieJson";
 
-export default function LottieCard({ title, file, speed = 1 }: AnimationEntry) {
+type LottieCardProps = AnimationEntry & {
+  selected: boolean;
+  onSelect: () => void;
+};
+
+export default function LottieCard({
+  title,
+  file,
+  speed = 1,
+  selected,
+  onSelect,
+}: LottieCardProps) {
   const lottieRef = useRef<LottieRefCurrentProps>(null);
   const [playing, setPlaying] = useState(true);
   const [loop, setLoop] = useState(true);
-  const [animationData, setAnimationData] = useState<unknown>(null);
-
-  useEffect(() => {
-    let cancelled = false;
-    fetch(`${basePath}${file}`)
-      .then((res) => res.json())
-      .then((data) => {
-        if (!cancelled) setAnimationData(data);
-      });
-    return () => {
-      cancelled = true;
-    };
-  }, [file]);
+  const animationData = useLottieJson(file);
 
   function togglePlaying() {
     if (playing) {
@@ -42,7 +41,22 @@ export default function LottieCard({ title, file, speed = 1 }: AnimationEntry) {
   }
 
   return (
-    <div className="flex items-center gap-4 overflow-hidden rounded-xl border border-black/10 bg-white p-4 shadow-sm dark:border-white/10 dark:bg-white/5">
+    <div
+      role="button"
+      tabIndex={0}
+      onClick={onSelect}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          onSelect();
+        }
+      }}
+      className={`flex cursor-pointer items-center gap-4 overflow-hidden rounded-xl border bg-white p-4 text-left shadow-sm dark:bg-white/5 ${
+        selected
+          ? "border-[#00383C] ring-1 ring-[#00383C] dark:border-[#5fa8ad] dark:ring-[#5fa8ad]"
+          : "border-black/10 dark:border-white/10"
+      }`}
+    >
       <div className="flex h-[30px] w-[30px] shrink-0 items-center justify-center overflow-hidden rounded-[4px] bg-[#00383C]">
         {animationData ? (
           <Lottie
@@ -62,14 +76,20 @@ export default function LottieCard({ title, file, speed = 1 }: AnimationEntry) {
         <div className="flex gap-1">
           <button
             type="button"
-            onClick={togglePlaying}
+            onClick={(e) => {
+              e.stopPropagation();
+              togglePlaying();
+            }}
             className="rounded-md px-2 py-1 text-xs font-medium hover:bg-black/5 dark:hover:bg-white/10"
           >
             {playing ? "Pause" : "Play"}
           </button>
           <button
             type="button"
-            onClick={toggleLoop}
+            onClick={(e) => {
+              e.stopPropagation();
+              toggleLoop();
+            }}
             className={`rounded-md px-2 py-1 text-xs font-medium hover:bg-black/5 dark:hover:bg-white/10 ${
               loop ? "text-blue-600 dark:text-blue-400" : ""
             }`}
@@ -78,7 +98,10 @@ export default function LottieCard({ title, file, speed = 1 }: AnimationEntry) {
           </button>
           <button
             type="button"
-            onClick={restart}
+            onClick={(e) => {
+              e.stopPropagation();
+              restart();
+            }}
             className="rounded-md px-2 py-1 text-xs font-medium hover:bg-black/5 dark:hover:bg-white/10"
           >
             Restart

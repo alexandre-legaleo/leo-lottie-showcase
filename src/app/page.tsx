@@ -1,5 +1,5 @@
 import { animations } from "@/lib/animations";
-import LottieCard from "@/components/LottieCard";
+import Gallery from "@/components/Gallery";
 
 export default function Home() {
   return (
@@ -14,11 +14,7 @@ export default function Home() {
         {animations.length === 0 ? (
           <EmptyState />
         ) : (
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {animations.map((animation) => (
-              <LottieCard key={animation.id} {...animation} />
-            ))}
-          </div>
+          <Gallery animations={animations} />
         )}
       </main>
     </div>
