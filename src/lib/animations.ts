@@ -91,6 +91,6 @@ export const animations: AnimationEntry[] = [
     title: "Sign Loop",
     file: "/lottie/sign-loop.json",
     speed: 1.6,
-    previewText: "Signature électronique en cours…",
+    previewText: "Signature numérique en cours…",
   },
 ];
