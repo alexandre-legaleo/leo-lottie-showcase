@@ -3,6 +3,8 @@ export type AnimationEntry = {
   title: string;
   /** Path under /public, e.g. exported from After Effects via the Bodymovin plugin. */
   file: string;
+  /** Playback speed multiplier, e.g. 2 for 2x. Defaults to 1. */
+  speed?: number;
 };
 
 // Drop your After Effects → Bodymovin JSON exports into public/lottie/
@@ -36,5 +38,10 @@ export const animations: AnimationEntry[] = [
     file: "/lottie/scan-extended.json",
   },
   { id: "scan", title: "Scan", file: "/lottie/scan.json" },
-  { id: "sign-loop", title: "Sign Loop", file: "/lottie/sign-loop.json" },
+  {
+    id: "sign-loop",
+    title: "Sign Loop",
+    file: "/lottie/sign-loop.json",
+    speed: 1.6,
+  },
 ];

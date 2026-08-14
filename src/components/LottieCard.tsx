@@ -5,7 +5,7 @@ import Lottie, { type LottieRefCurrentProps } from "lottie-react";
 import type { AnimationEntry } from "@/lib/animations";
 import { basePath } from "@/lib/basePath";
 
-export default function LottieCard({ title, file }: AnimationEntry) {
+export default function LottieCard({ title, file, speed = 1 }: AnimationEntry) {
   const lottieRef = useRef<LottieRefCurrentProps>(null);
   const [playing, setPlaying] = useState(true);
   const [loop, setLoop] = useState(true);
@@ -50,6 +50,7 @@ export default function LottieCard({ title, file }: AnimationEntry) {
             animationData={animationData}
             loop={loop}
             autoplay
+            onDOMLoaded={() => lottieRef.current?.setSpeed(speed)}
             className="h-full w-full"
           />
         ) : (

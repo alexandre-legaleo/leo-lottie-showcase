@@ -7,7 +7,7 @@ export default function Home() {
       <main className="mx-auto flex w-full max-w-5xl flex-1 flex-col px-6 py-16 sm:px-10">
         <header className="mb-10">
           <h1 className="text-3xl font-semibold tracking-tight text-black dark:text-zinc-50">
-            Hello Leo
+            Hello Leo ✌️
           </h1>
         </header>
 
